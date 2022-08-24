@@ -1,5 +1,8 @@
 import { pool } from "../db.js";
-import { myCache, redisClient } from "../index.js";
+import {
+	myCache,
+	// redisClient
+} from "../index.js";
 
 export const create = async (req, res) => {
 	try {
@@ -11,7 +14,7 @@ export const create = async (req, res) => {
 		res.json(newToDo.rows);
 		// console.log(description);
 	} catch (error) {
-		console.log(error.message);
+		res.status(400).send(error.message);
 	}
 };
 
@@ -19,10 +22,11 @@ export const getAll = async (req, res) => {
 	try {
 		const allToDos = await pool.query("SELECT * FROM todo");
 		res.status(200).json(allToDos.rows);
-		const cache = myCache.set("todos", allToDos.rows);
-		redisClient.setEx("todos", 30, JSON.stringify(allToDos.rows));
+		myCache.set("todos", allToDos.rows);
+		// redisClient.setEx("todos", 30, JSON.stringify(allToDos.rows));
 	} catch (error) {
-		console.log(error.message);
+		// console.log(error.message);
+		res.status(401).send(error.message);
 	}
 };
 
@@ -34,7 +38,7 @@ export const getOne = async (req, res) => {
 		]);
 		res.json(singleTodo.rows);
 	} catch (error) {
-		console.log(error.message);
+		res.status(403).send(error.message);
 	}
 };
 
@@ -48,7 +52,7 @@ export const update = async (req, res) => {
 		);
 		res.json("Todo updated");
 	} catch (error) {
-		console.log(error);
+		res.status(405).send(error.message);
 	}
 };
 
@@ -60,6 +64,6 @@ export const deleteTodo = async (req, res) => {
 		]);
 		res.json("Deletion Successful");
 	} catch (error) {
-		console.log(error);
+		res.status(406).send(error.message);
 	}
 };

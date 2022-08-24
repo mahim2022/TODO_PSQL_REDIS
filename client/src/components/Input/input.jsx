@@ -20,10 +20,15 @@ export const Input = ({ changeEdit, useEdit, setTodoCounter, todoCounter }) => {
 					setTodoCounter(!todoCounter);
 				}
 			} else {
-				const res = await createTodo(data);
-				if (res.status === 200) {
-					setTodoCounter(!todoCounter);
-				}
+				// const res = await createTodo(data);
+				// if (res.status === 200) {
+				// 	setTimeout(setTodoCounter(!todoCounter), 4000);
+				// }
+				createTodo(data).then((res) => {
+					if (res.status === 200) {
+						setTodoCounter(!todoCounter);
+					}
+				});
 			}
 			setData({ description: "" });
 			changeEdit({ todo_id: false, decription: "" });

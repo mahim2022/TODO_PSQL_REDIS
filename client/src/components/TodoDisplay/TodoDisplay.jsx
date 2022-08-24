@@ -17,6 +17,7 @@ export const TodoDisplay = ({
 			setdata(result);
 		};
 		getAll();
+		console.log("refresh");
 	}, [todoCounter]);
 
 	const edit = ({ todo_id, description }) => {
@@ -36,14 +37,36 @@ export const TodoDisplay = ({
 						<Paper
 							elevation={10}
 							key={cur.todo_id}
-							style={{ marginBottom: "10px", marginTop: "10px" }}
+							style={{
+								marginBottom: "10px",
+								marginTop: "10px",
+								display: "flex",
+								flexDirection: "row",
+								justifyContent: "space-between",
+							}}
 						>
-							<Typography>
-								{cur.todo_id}/{"      "}
-								{cur.description}
-							</Typography>
-							<Button onClick={() => edit(cur)}>Edit</Button>
-							<Button onClick={() => onDelete(cur.todo_id)}>Delete</Button>
+							<div>
+								<Typography>
+									{cur.todo_id}/{"      "}
+									{cur.description}
+								</Typography>
+							</div>
+							<div>
+								<Button
+									variant="contained"
+									onClick={() => edit(cur)}
+									style={{ marginRight: "5px" }}
+								>
+									Edit
+								</Button>
+								<Button
+									variant="contained"
+									color="error"
+									onClick={() => onDelete(cur.todo_id)}
+								>
+									Delete
+								</Button>
+							</div>
 						</Paper>
 					);
 				})
